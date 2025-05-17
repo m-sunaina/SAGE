@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Userlogin.css';
+import { registerUser, loginUser } from './api'; // add this line
 
 const securityQuestions = [
   "What was your first pet’s name?",
@@ -21,15 +22,24 @@ function UserLogin() {
     setIsNewUser(!isNewUser);
   };
 
-  const handleSubmit = () => {
-    if (isNewUser) {
-      console.log("Registering:", {
-        name, email, password, selectedQuestion, answer
-      });
-    } else {
-      console.log("Logging in:", {
-        email, password
-      });
+  const handleSubmit = async () => {
+    try {
+      if (isNewUser) {
+        const newUser = {
+          name,
+          email,
+          password,
+          securityQuestion: selectedQuestion,
+          securityAnswer: answer
+        };
+        const res = await registerUser(newUser);
+        alert(res.data.message);
+      } else {
+        const res = await loginUser({ email, password });
+        alert(res.data.message);
+      }
+    } catch (err) {
+      alert(err.response?.data?.error || "Something went wrong");
     }
   };
 
