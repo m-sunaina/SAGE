@@ -147,6 +147,57 @@ SAGE solves this by:
     
 
 ---
+## Pictures
+![Screenshot 2025-05-18 084646](https://github.com/user-attachments/assets/202e6908-61fe-4938-b1db-520ca3cc8a20)
+
+![Screenshot 2025-05-18 111225](https://github.com/user-attachments/assets/bcdd73d2-1400-4b0f-b4d3-f847f6f3ea2e)
+
+
+![Screenshot 2025-05-18 111240](https://github.com/user-attachments/assets/87e0f849-1b05-4d65-a52a-6f4907f6dfc2)
+
+
+
+
+![Screenshot 2025-05-18 111305](https://github.com/user-attachments/assets/02341585-7344-484b-b2aa-b886e7c06180)
+
+
+
+
+![Screenshot 2025-05-18 111325](https://github.com/user-attachments/assets/5d66d46a-7b4d-4a15-a73f-71f0b50a53de)
+
+
+
+
+
+
+![Screenshot 2025-05-18 111354](https://github.com/user-attachments/assets/e96c4bcc-655e-4281-aa4a-d7cc7a69dbd4)
+
+
+
+
+![Screenshot 2025-05-18 111418](https://github.com/user-attachments/assets/6838ccec-ca33-4e58-9c75-70ee11524cdf)
+
+
+![Screenshot 2025-05-18 111440](https://github.com/user-attachments/assets/595a41f7-fe9c-429c-bc8f-b808724a89d5)
+
+
+
+![Screenshot 2025-05-18 111534](https://github.com/user-attachments/assets/555fb1a8-8054-4cdd-9b86-68b61e908e0e)
+
+
+
+![Screenshot 2025-05-18 111605](https://github.com/user-attachments/assets/23158d93-1557-4257-84e1-deb32091b50f)
+
+
+
+![Screenshot 2025-05-18 111631](https://github.com/user-attachments/assets/9548f0b4-638a-425d-aa5b-296f789741cd)
+
+
+![Screenshot 2025-05-18 111656](https://github.com/user-attachments/assets/63540844-8299-493d-a9cf-4e19109988c2)
+
+
+
+![Screenshot 2025-05-18 111710](https://github.com/user-attachments/assets/d1a06e1e-c583-4b42-b87c-81226cb02e8f)
 
 ## 9 | Flow Map (Mind Map Style)
 
@@ -209,57 +260,7 @@ flowchart TD
     style H fill:#607D8B,stroke:#455A64
 '''
 
-## Pictures
-![Screenshot 2025-05-18 084646](https://github.com/user-attachments/assets/202e6908-61fe-4938-b1db-520ca3cc8a20)
 
-![Screenshot 2025-05-18 111225](https://github.com/user-attachments/assets/bcdd73d2-1400-4b0f-b4d3-f847f6f3ea2e)
-
-
-![Screenshot 2025-05-18 111240](https://github.com/user-attachments/assets/87e0f849-1b05-4d65-a52a-6f4907f6dfc2)
-
-
-
-
-![Screenshot 2025-05-18 111305](https://github.com/user-attachments/assets/02341585-7344-484b-b2aa-b886e7c06180)
-
-
-
-
-![Screenshot 2025-05-18 111325](https://github.com/user-attachments/assets/5d66d46a-7b4d-4a15-a73f-71f0b50a53de)
-
-
-
-
-
-
-![Screenshot 2025-05-18 111354](https://github.com/user-attachments/assets/e96c4bcc-655e-4281-aa4a-d7cc7a69dbd4)
-
-
-
-
-![Screenshot 2025-05-18 111418](https://github.com/user-attachments/assets/6838ccec-ca33-4e58-9c75-70ee11524cdf)
-
-
-![Screenshot 2025-05-18 111440](https://github.com/user-attachments/assets/595a41f7-fe9c-429c-bc8f-b808724a89d5)
-
-
-
-![Screenshot 2025-05-18 111534](https://github.com/user-attachments/assets/555fb1a8-8054-4cdd-9b86-68b61e908e0e)
-
-
-
-![Screenshot 2025-05-18 111605](https://github.com/user-attachments/assets/23158d93-1557-4257-84e1-deb32091b50f)
-
-
-
-![Screenshot 2025-05-18 111631](https://github.com/user-attachments/assets/9548f0b4-638a-425d-aa5b-296f789741cd)
-
-
-![Screenshot 2025-05-18 111656](https://github.com/user-attachments/assets/63540844-8299-493d-a9cf-4e19109988c2)
-
-
-
-![Screenshot 2025-05-18 111710](https://github.com/user-attachments/assets/d1a06e1e-c583-4b42-b87c-81226cb02e8f)
 
 
 
