@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sage Solutions Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #60ad5e;
+            --primary-dark: #005005;
+            --secondary: #f5f5f5;
+            --text: #333;
+            --text-light: #666;
+            --background: #f9f9f9;
+            --card-bg: #fff;
+            --border: #e0e0e0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+        }
+
+        [data-theme="dark"] {
+            --primary: #60ad5e;
+            --primary-light: #8bc34a;
+            --primary-dark: #2e7d32;
+            --secondary: #424242;
+            --text: #f5f5f5;
+            --text-light: #bdbdbd;
+            --background: #121212;
+            --card-bg: #1e1e1e;
+            --border: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            transition: all 0.3s ease;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            min-width: max-content;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            border: none;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        
+
+        .nav-button.bank {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .nav-button.social {
+            background-color: #4285f4;
+            color: white;
+        }
+
+        .nav-button.trade {
+            background-color: #fbbc05;
+            color: white;
+        }
+
+        .nav-button.education {
+            background-color: #34a853;
+            color: white;
+        }
+
+        .nav-button.network {
+            background-color: #f505e5;
+            color: white;
+        }
+
+        .nav-button.admin {
+            background-color: #ea4335;
+            color: white;
+        }
+
+        .nav-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text);
+            min-width: max-content;
+        }
+
+        .dashboard-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .dashboard-subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .solution-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--border);
+        }
+
+        .solution-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .solution-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .solution-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .solution-description {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .solution-button {
+            padding: 8px 16px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .solution-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .dashboard-section {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .main-content {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .sidebar {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title .icon {
+            font-size: 20px;
+        }
+
+        .risk-charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .risk-chart-container {
+            height: 200px;
+        }
+
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .testimonial {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .testimonial-role {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .solution-showcase {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 10px 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--background);
+        }
+
+        .solution-showcase::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .solution-showcase::-webkit-scrollbar-track {
+            background: var(--background);
+        }
+
+        .solution-showcase::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 20px;
+        }
+
+        .game-container {
+    width: 100%;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.game-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.game-board {
+    width: 100%;
+    height: 200px;
+    background-color: var(--background);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.game-character {
+    position: absolute;
+    font-size: 24px;
+    bottom: 20px;
+    left: 50px;
+    transition: transform 0.1s;
+    z-index: 10;
+}
+
+.game-obstacle {
+    position: absolute;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--danger);
+    bottom: 20px;
+    right: -100px;
+    white-space: nowrap;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 5;
+}
+
+.game-score {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: var(--text);
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    display: none;
+    z-index: 20;
+}
+
+.game-over h3 {
+    margin-bottom: 10px;
+    color: var(--primary-light);
+}
+
+.game-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.game-btn {
+    padding: 8px 16px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.game-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+@media (max-width: 768px) {
+    .game-controls {
+        flex-direction: column;
+    }
+}
+
+        .showcase-item {
+            min-width: 300px;
+            height: 200px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .showcase-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .mermaid-container {
+    width: 100%;
+    overflow: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background-color: var(--card-bg);
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.mermaid {
+    width: max-content;
+    min-width: 100%;
+    min-height: 400px;
+    transform-origin: 0 0;
+    transition: transform 0.2s ease;
+}
+
+.zoom-controls {
+    float: right;
+    margin-left: 15px;
+}
+
+.zoom-btn {
+    padding: 4px 8px;
+    margin: 0 2px;
+    background-color: var(--primary-light);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.zoom-btn:hover {
+    background-color: var(--primary);
+}
+
+/* Make the flowchart elements more visible */
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node ellipse,
+.mermaid .node polygon {
+    fill: var(--primary-light);
+    stroke: var(--primary-dark);
+    stroke-width: 2px;
+}
+
+.mermaid .edgePath path {
+    stroke: var(--primary);
+    stroke-width: 2px;
+}
+
+.mermaid .label {
+    font-size: 14px;
+    color: var(--text);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .mermaid {
+        min-height: 300px;
+    }
+    
+    .zoom-controls {
+        float: none;
+        display: block;
+        margin-top: 10px;
+        margin-left: 0;
+    }
+}
+        .showcase-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .showcase-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .network-info {
+            margin-top: 20px;
+        }
+
+        .network-field {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .network-field label {
+            width: 120px;
+            font-weight: 500;
+            color: var(--text-light);
+            min-width: max-content;
+        }
+
+        .network-field input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background-color: var(--background);
+            color: var(--text);
+            min-width: 200px;
+        }
+
+        .network-field .edit-btn {
+            padding: 8px 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            min-width: max-content;
+        }
+
+        .network-field .edit-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid var(--primary);
+        }
+
+
+        .mermaid {
+    width: 100%;
+    min-height: 400px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow: auto;
+}
+
+.mermaid svg {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+}
+
+/* For the LR (left-to-right) flowchart */
+.mermaid .label {
+    font-size: 14px;
+}
+
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node ellipse,
+.mermaid .node polygon {
+    fill: var(--primary-light);
+    stroke: var(--primary-dark);
+    stroke-width: 2px;
+}
+
+.mermaid .edgePath path {
+    stroke: var(--primary);
+    stroke-width: 2px;
+    fill: none;
+}
+
+.mermaid .cluster rect {
+    fill: rgba(200, 200, 200, 0.2);
+    stroke: var(--border);
+    stroke-width: 1px;
+    rx: 5;
+    ry: 5;
+}
+
+.mermaid .cluster-label {
+    fill: var(--text);
+    font-weight: bold;
+}
+
+/* Make arrows more visible */
+.mermaid .arrowheadPath {
+    fill: var(--primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .mermaid {
+        min-height: 300px;
+    }
+}
+        .team-member h4 {
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .team-member p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item .icon {
+            font-size: 20px;
+            color: var(--primary);
+            min-width: max-content;
+        }
+
+        .terms-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            max-width: 400px;
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+
+        .terms-notification.show {
+            transform: translateX(0);
+        }
+
+        .terms-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .terms-title {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .terms-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--text-light);
+        }
+
+        .terms-content {
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .terms-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .terms-content::-webkit-scrollbar-track {
+            background: var(--background);
+        }
+
+        .terms-content::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 20px;
+        }
+
+        .terms-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .terms-btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+        }
+
+        .terms-btn.accept {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .terms-btn.decline {
+            background-color: var(--secondary);
+            color: var(--text);
+        }
+
+        .mermaid {
+            width: 100%;
+            height: 300px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            overflow: auto;
+        }
+
+        .mermaid svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .data-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        .data-card h4 {
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .data-card p {
+            color: var(--text-light);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .data-card .value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-user {
+            align-self: flex-end;
+            background-color: var(--primary-light);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 18px 18px 0 18px;
+            max-width: 70%;
+        }
+
+        .message-bot {
+            align-self: flex-start;
+            background-color: var(--secondary);
+            color: var(--text);
+            padding: 10px 15px;
+            border-radius: 18px 18px 18px 0;
+            max-width: 70%;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .chat-input-container {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid var(--border);
+            background-color: var(--card-bg);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            outline: none;
+            background-color: var(--background);
+            color: var(--text);
+        }
+
+        .send-button {
+            margin-left: 10px;
+            padding: 12px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .send-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .profile-section {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+        }
+
+        .profile-info h3 {
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .profile-info p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h4 {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Game Animation Section */
+        .game-container {
+            width: 100%;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .game-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .game-board {
+            width: 100%;
+            height: 200px;
+            background-color: var(--background);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .game-character {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            bottom: 20px;
+            left: 50px;
+            transition: transform 0.1s;
+        }
+
+        .game-obstacle {
+            position: absolute;
+            width: 30px;
+            height: 50px;
+            background-color: var(--danger);
+            bottom: 20px;
+            right: -30px;
+        }
+
+        .game-score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--text);
+            font-weight: bold;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .game-btn {
+            padding: 8px 16px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .game-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .game-over h3 {
+            margin-bottom: 10px;
+            color: var(--primary-light);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-section {
+                flex-direction: column;
+            }
+            
+            .risk-charts {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .terms-notification {
+                max-width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+            }
+
+            .game-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+                Sage Solutions
+            </div>
+            <div class="nav-buttons">
+                <a href="http://127.0.0.1:5500/bank-sage.html" class="nav-button bank">Sage Bank</a>
+                <a href="http://127.0.0.1:5500/social-sage.html" class="nav-button social">Sage Social</a>
+                <a href="http://127.0.0.1:5500/trade-sage.html" class="nav-button trade">Sage Trade</a>
+                <a href="http://localhost:3000/" class="nav-button education">Sage Education</a>
+                <a href="http://127.0.0.1:5500/sage-network.html" class="nav-button network">Sage Network</a>
+                
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌓</button>
+        </header>
+
+        <div class="profile-section">
+            <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="Profile" class="profile-pic">
+            <div class="profile-info">
+                <h3>Welcome, Alex Johnson</h3>
+                <p>Senior Solutions Architect | Last login: Today at 09:42 AM</p>
+            </div>
+        </div>
+
+        <div class="profile-stats">
+            <div class="stat-card">
+                <h4>12</h4>
+                <p>Active Projects</p>
+            </div>
+            <div class="stat-card">
+                <h4>98%</h4>
+                <p>System Uptime</p>
+            </div>
+            <div class="stat-card">
+                <h4>24</h4>
+                <p>Team Members</p>
+            </div>
+        </div>
+
+        <h1 class="dashboard-title">Sage Solutions Platform</h1>
+        <p class="dashboard-subtitle">Integrated digital solutions for banking, social networking, trading, and education</p>
+
+        <div class="solutions-grid">
+            <div class="solution-card">
+                <div class="solution-icon">🏦</div>
+                <h3 class="solution-title">Sage Bank</h3>
+                <p class="solution-description">
+                    Our advanced banking solution offers secure transactions, risk monitoring, and AI-powered financial insights. 
+                    Manage your finances with cutting-edge technology and unparalleled security.
+                </p>
+                <a href="http://127.0.0.1:5500/bank-sage.html" class="solution-button">Explore</a>
+            </div>
+            <div class="solution-card">
+                <div class="solution-icon">👥</div>
+                <h3 class="solution-title">Sage Social</h3>
+                <p class="solution-description">
+                    Connect with like-minded professionals in a secure, privacy-focused environment. 
+                    Our social platform integrates with your financial tools for seamless networking.
+                </p>
+                <a href="http://127.0.0.1:5500/social-sage.html" class="solution-button">Explore</a>
+            </div>
+            <div class="solution-card">
+                <div class="solution-icon">📈</div>
+                <h3 class="solution-title">Sage Trade</h3>
+                <p class="solution-description">
+                    Advanced trading platform with real-time analytics, AI predictions, and risk assessment tools. 
+                    Trade with confidence using our institutional-grade platform.
+                </p>
+                <a href="http://127.0.0.1:5500/trade-sage.html" class="solution-button">Explore</a>
+            </div>
+            <div class="solution-card">
+                <div class="solution-icon">🎓</div>
+                <h3 class="solution-title">Sage Education</h3>
+                <p class="solution-description">
+                    Learn about finance, technology, and digital literacy through our comprehensive courses. 
+                    Earn certifications recognized by industry leaders.
+                </p>
+                <a href="http://localhost:3000/" class="solution-button">Explore</a>
+            </div>
+            <div class="solution-card">
+                <div class="solution-icon">🛜</div>
+                <h3 class="solution-title">Sage Network</h3>
+                <p class="solution-description">
+                    Enhance your network security through a ground-breaking
+                    new technology which leverages your daily connected devices
+                    to predict threats.
+                </p>
+                <a href="http://127.0.0.1:5500/sage-network.html/" class="solution-button">Explore</a>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <div class="main-content">
+                <div class="card">
+                    <h3 class="card-title">Solution Overview</h3>
+                    <div class="solution-showcase">
+                        <div class="showcase-item">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Banking Solution">
+                            <div class="showcase-caption">Sage Bank - Secure Financial Platform</div>
+                        </div>
+                        <div class="showcase-item">
+                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Team Collaboration">
+                            <div class="showcase-caption">Sage Social - Professional Network</div>
+                        </div>
+                        <div class="showcase-item">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Data Analytics">
+                            <div class="showcase-caption">Sage Trade - Market Analytics</div>
+                        </div>
+                        <div class="showcase-item">
+                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Education Platform">
+                            <div class="showcase-caption">Sage Education - Learning Portal</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+    <div class="card">
+    <h1 class="card-title">Our Workflow Process 
+        <span class="zoom-controls">
+            <button class="zoom-btn" id="zoomIn">+</button>
+            <button class="zoom-btn" id="zoomOut">-</button>
+            <button class="zoom-btn" id="zoomReset">Reset</button>
+        </span>
+    </h1>
+    <div class="mermaid-container">
+        <div class="mermaid">
+            graph LR
+                A[Client Request] --> B{Initial Analysis}
+                B -->|Approved| C[Requirements Gathering]
+                B -->|Rejected| D[Send Rejection Notice]
+                C --> E[Solution Design]
+                E --> F[Technical Specification]
+                F --> G[Development Sprint]
+                G --> H[Unit Testing]
+                H -->|Pass| I[Integration Testing]
+                H -->|Fail| G
+                I -->|Pass| J[User Acceptance Testing]
+                I -->|Fail| G
+                J -->|Approved| K[Production Deployment]
+                J -->|Revisions Needed| E
+                K --> L[Live Monitoring]
+                L -->|Issues Detected| M[Incident Management]
+                M -->|Bug Fix| G
+                M -->|Enhancement| E
+                L -->|Stable| N[Client Feedback Collection]
+                N --> O[Continuous Improvement]
+                O --> P[Roadmap Planning]
+                P --> A
+        </div>
+    </div>
+</div>
+
+                <div class="card">
+                    <h3 class="card-title">System Data</h3>
+                    <div class="data-grid">
+                        <div class="data-card">
+                            <h4>API Requests</h4>
+                            <div class="value">1,248</div>
+                            <p>Today's API call volume with 99.8% success rate</p>
+                        </div>
+                        <div class="data-card">
+                            <h4>Active Users</h4>
+                            <div class="value">842</div>
+                            <p>Currently logged in across all platforms</p>
+                        </div>
+                        <div class="data-card">
+                            <h4>Data Processed</h4>
+                            <div class="value">24.7 TB</div>
+                            <p>This month's analytics data volume</p>
+                        </div>
+                        <div class="data-card">
+                            <h4>Response Time</h4>
+                            <div class="value">128ms</div>
+                            <p>Average API response time</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Network Configuration <span class="icon">🌐</span></h3>
+                    <div class="network-info">
+                        <div class="network-field">
+                            <label>IP Address:</label>
+                            <input type="text" value="192.168.1.105" id="ipAddress" readonly>
+                            <button class="edit-btn" onclick="editField('ipAddress')">Edit</button>
+                        </div>
+                        <div class="network-field">
+                            <label>MAC Address:</label>
+                            <input type="text" value="00:1A:2B:3C:4D:5E" id="macAddress" readonly>
+                            <button class="edit-btn" onclick="editField('macAddress')">Edit</button>
+                        </div>
+                        <div class="network-field">
+                            <label>Router IP:</label>
+                            <input type="text" value="192.168.1.1" id="routerIp" readonly>
+                            <button class="edit-btn" onclick="editField('routerIp')">Edit</button>
+                        </div>
+                        <div class="network-field">
+                            <label>DNS Server:</label>
+                            <input type="text" value="8.8.8.8" id="dnsServer" readonly>
+                            <button class="edit-btn" onclick="editField('dnsServer')">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="card">
+                    <h3 class="card-title">Development Team</h3>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Manymala Sunaina">
+                            <h4>Manymala Sunaina</h4>
+                            <p>Lead Developer</p>
+                        </div>
+                        <div class="team-member">
+                            <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Monal Rai">
+                            <h4>Monal Rai</h4>
+                            <p>UX Designer</p>
+                        </div>
+                        <div class="team-member">
+                            <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Muzammil Choudhari">
+                            <h4>Muzamil Chowdary</h4>
+                            <p>Backend Engineer</p>
+                        </div>
+                        <div class="team-member">
+                            <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="Pranav Jambur">
+                            <h4>Pranav Jambur</h4>
+                            <p>Data Scientist</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Contact Information</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span class="icon">📞</span>
+                            <span>+91 9901768950</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="icon">📍</span>
+                            <a href="https://www.google.com/maps/place/R.+V.+College+of+Engineering/data=!4m2!3m1!1s0x0:0x75a3463d510cf26e?sa=X&ved=1t:2428&ictx=111" target="_blank">RV College of Engineering</a>
+                        </div>
+                        <div class="contact-item">
+                            <span class="icon">✉️</span>
+                            <span>contact@sagesolutions.com</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Sage Assistant</h3>
+                    <div class="chat-container">
+                        <div class="chat-header">
+                            <span>Ask me about Sage Solutions</span>
+                            <span>🤖</span>
+                        </div>
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message">
+                                <div class="message-bot">
+                                    Hello! I'm your Sage Assistant. How can I help you today?
+                                </div>
+                                <div class="message-time">Just now</div>
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." />
+                            <button class="send-button" id="sendButton">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Animation Section -->
+        <div class="game-container">
+    <h3 class="game-title">🏃‍♂️ Sage Runner - Cybersecurity Challenge</h3>
+    <div class="game-board" id="gameBoard">
+        <div class="game-character" id="gameCharacter">🛡️</div>
+        <div class="game-score" id="gameScore">Score: 0</div>
+        <div class="game-over" id="gameOver">
+            <h3>Game Over!</h3>
+            <p id="finalScore">Your score: 0</p>
+            <button class="game-btn" id="restartBtn">Play Again</button>
+        </div>
+    </div>
+    <div class="game-controls">
+        <button class="game-btn" id="startBtn">Start Game</button>
+        <button class="game-btn" id="jumpBtn">Jump!</button>
+    </div>
+</div>
+    </div>
+
+    <div class="terms-notification" id="termsNotification">
+        <div class="terms-header">
+            <h3 class="terms-title">Terms & Conditions</h3>
+            <button class="terms-close" id="termsClose">×</button>
+        </div>
+        <div class="terms-content">
+            <p><strong>Last Updated:</strong> June 2023</p>
+            <p>By using Sage Solutions, you agree to these terms:</p>
+            <ol>
+                <li>You will use the platform only for lawful purposes</li>
+                <li>You are responsible for maintaining the confidentiality of your account</li>
+                <li>We reserve the right to modify or terminate services at any time</li>
+                <li>All intellectual property rights are reserved</li>
+                <li>Data will be handled according to our privacy policy</li>
+            </ol>
+            <p>For full terms, please visit our website or contact our support team.</p>
+        </div>
+        <div class="terms-actions">
+            <button class="terms-btn accept" id="termsAccept">Accept</button>
+            <button class="terms-btn decline" id="termsDecline">Decline</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Theme Toggle
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            setTimeout(updateMermaidTheme, 300); 
+            const newTheme = currentTheme === 'dark' ? null : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme || '');
+            
+            // Update Mermaid theme
+            mermaid.initialize({
+                theme: newTheme === 'dark' ? 'dark' : 'default'
+            });
+            
+            // Save preference to localStorage
+            localStorage.setItem('theme', newTheme || 'light');
+        });
+        updateMermaidTheme();
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
+        // Terms Notification
+        const termsNotification = document.getElementById('termsNotification');
+        const termsClose = document.getElementById('termsClose');
+        const termsAccept = document.getElementById('termsAccept');
+        const termsDecline = document.getElementById('termsDecline');
+
+        setTimeout(() => {
+            if (!localStorage.getItem('termsAccepted')) {
+                termsNotification.classList.add('show');
+            }
+        }, 2000);
+
+        termsClose.addEventListener('click', () => {
+            termsNotification.classList.remove('show');
+        });
+
+        termsAccept.addEventListener('click', () => {
+            localStorage.setItem('termsAccepted', 'true');
+            termsNotification.classList.remove('show');
+        });
+
+        termsDecline.addEventListener('click', () => {
+            termsNotification.classList.remove('show');
+            alert('To continue using Sage Solutions, please accept our Terms & Conditions.');
+        });
+
+        function updateMermaidTheme() {
+    mermaid.initialize({
+        startOnLoad: false,
+        theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+        flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true,
+            curve: 'basis'
+        }
+    });
+    mermaid.init(undefined, '.mermaid');
+}
+
+
+        // Network Field Editing
+        function editField(fieldId) {
+            const field = document.getElementById(fieldId);
+            const isReadOnly = field.hasAttribute('readonly');
+            
+            if (isReadOnly) {
+                field.removeAttribute('readonly');
+                field.focus();
+                field.parentElement.querySelector('.edit-btn').textContent = 'Save';
+            } else {
+                field.setAttribute('readonly', 'true');
+                field.parentElement.querySelector('.edit-btn').textContent = 'Edit';
+                // Here you would typically save the changes to your backend
+            }
+        }
+
+        // Chat Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatInput = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+            const chatMessages = document.getElementById('chatMessages');
+
+            function addMessage(text, isUser) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+
+                const messageContent = document.createElement('div');
+                messageContent.className = isUser ? 'message-user' : 'message-bot';
+                messageContent.textContent = text;
+
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'message-time';
+                timeDiv.textContent = new Date().toLocaleTimeString([], { 
+                    hour: '2-digit', 
+                    minute: '2-digit'
+                });
+
+                messageDiv.appendChild(messageContent);
+                messageDiv.appendChild(timeDiv);
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            async function sendMessageToOllama(message) {
+                // Add "Thinking..." message
+                const thinkingId = Date.now();
+                const thinkingDiv = document.createElement('div');
+                thinkingDiv.className = 'message';
+                thinkingDiv.innerHTML = `
+                    <div class="message-bot">Thinking...</div>
+                    <div class="message-time">Just now</div>
+                `;
+                chatMessages.appendChild(thinkingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                try {
+                    // Call Ollama API directly (make sure Ollama is running on localhost:11434)
+                    const response = await fetch('http://localhost:11434/api/generate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            model: 'llama3.2', // or 'llama3' if you have it
+                            prompt: `You are a helpful assistant for Sage Solutions. Respond to: ${message} + dont answer in markdown, answer in simple words without using the * charecter.`,  
+                            stream: false
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    
+                    // Remove thinking message
+                    chatMessages.removeChild(thinkingDiv);
+                    
+                    // Add the actual response
+                    addMessage(data.response.trim(), false);
+                } catch (error) {
+                    console.error("Ollama error:", error);
+                    
+                    // Remove thinking message
+                    chatMessages.removeChild(thinkingDiv);
+                    
+                    // Add error message
+                    addMessage("I'm having trouble connecting to the Ollama server. Please ensure Ollama is running on localhost:11434.", false);
+                    
+                    // Add fallback response
+                    const fallback = getFallbackResponse(message.toLowerCase());
+                    addMessage(fallback, false);
+                }
+            }
+
+            function getFallbackResponse(msg) {
+                if (msg.includes("bank")) return "Sage Bank offers secure online banking with AI-powered fraud detection.";
+                if (msg.includes("social")) return "Sage Social provides private networking with end-to-end encryption.";
+                if (msg.includes("trade")) return "Sage Trade (coming soon) will offer institutional-grade trading tools.";
+                if (msg.includes("educat")) return "Sage Education features interactive courses on financial technology.";
+                if (msg.includes("risk")) return "Our risk system analyzes 200+ factors for transaction safety.";
+                return "I can tell you about Sage Bank, Social, Trade, or Education. What would you like to know?";
+            }
+
+            function handleSendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addMessage(message, true);
+                    chatInput.value = '';
+                    sendMessageToOllama(message);
+                }
+            }
+
+            // Event listeners
+            sendButton.addEventListener('click', handleSendMessage);
+            chatInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    handleSendMessage();
+                }
+            });
+
+            // Initial greeting
+            addMessage("Hello! I'm your Sage Assistant. Ask me about our banking, social, trading, or education solutions.", false);
+        });
+
+
+        let currentScale = 1;
+const minScale = 0.5;
+const maxScale = 3;
+const scaleStep = 0.1;
+
+// Function to apply zoom
+function applyZoom() {
+    const mermaidDiv = document.querySelector('.mermaid');
+    mermaidDiv.style.transform = `scale(${currentScale})`;
+}
+
+// Initialize the chart and zoom controls
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Mermaid
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+        flowchart: {
+            useMaxWidth: false, // Important for zooming
+            htmlLabels: true,
+            curve: 'basis'
+        }
+    });
+
+    // Set up zoom controls
+    document.getElementById('zoomIn').addEventListener('click', function() {
+        if (currentScale < maxScale) {
+            currentScale += scaleStep;
+            applyZoom();
+        }
+    });
+
+    document.getElementById('zoomOut').addEventListener('click', function() {
+        if (currentScale > minScale) {
+            currentScale -= scaleStep;
+            applyZoom();
+        }
+    });
+
+    document.getElementById('zoomReset').addEventListener('click', function() {
+        currentScale = 1;
+        applyZoom();
+    });
+
+    // Re-render on theme change
+    document.getElementById('themeToggle').addEventListener('click', function() {
+        setTimeout(function() {
+            mermaid.init(undefined, '.mermaid');
+        }, 300);
+    });
+});
+
+        // Game Animation
+     document.addEventListener('DOMContentLoaded', function() {
+    const gameBoard = document.getElementById('gameBoard');
+    const gameCharacter = document.getElementById('gameCharacter');
+    const gameScore = document.getElementById('gameScore');
+    const gameOver = document.getElementById('gameOver');
+    const finalScore = document.getElementById('finalScore');
+    const startBtn = document.getElementById('startBtn');
+    const jumpBtn = document.getElementById('jumpBtn');
+    const restartBtn = document.getElementById('restartBtn');
+
+    // Cybersecurity-themed obstacles
+    const obstacles = [
+        "IP Masking", "Impersonator", "Red Hat", 
+        "Phishing", "Malware", "DDoS", 
+        "Zero-Day", "Brute Force", "SQLi",
+        "XSS", "MITM", "Ransomware"
+    ];
+
+    // Create brick ground
+    const ground = document.createElement('div');
+    ground.className = 'game-ground';
+    gameBoard.appendChild(ground);
+
+    let isJumping = false;
+    let isGameOver = false;
+    let score = 0;
+    let gameSpeed = 5;
+    let obstacleInterval;
+    let scoreInterval;
+    let nextObstacleTime = 0;
+
+    function jump() {
+        if (isJumping || isGameOver) return;
+        
+        isJumping = true;
+        let jumpHeight = 0;
+        gameCharacter.textContent = "🦸";
+        
+        const jumpUp = setInterval(() => {
+            jumpHeight += 5;
+            gameCharacter.style.bottom = (40 + jumpHeight) + 'px';
+            
+            if (jumpHeight >= 100) {
+                clearInterval(jumpUp);
+                const jumpDown = setInterval(() => {
+                    jumpHeight -= 5;
+                    gameCharacter.style.bottom = (40 + jumpHeight) + 'px';
+                    
+                    if (jumpHeight <= 0) {
+                        clearInterval(jumpDown);
+                        isJumping = false;
+                        gameCharacter.style.bottom = '40px';
+                        gameCharacter.textContent = "🛡️";
+                    }
+                }, 20);
+            }
+        }, 20);
+    }
+
+    function createObstacle() {
+        if (isGameOver || Math.random() > 0.7) return; // 30% chance to skip
+        
+        const obstacleText = obstacles[Math.floor(Math.random() * obstacles.length)];
+        const obstacle = document.createElement('div');
+        obstacle.className = 'game-obstacle';
+        obstacle.textContent = obstacleText;
+        
+        // Random vertical position above ground
+        const verticalPos = 60 + Math.random() * 60;
+        obstacle.style.bottom = verticalPos + 'px';
+        
+        gameBoard.appendChild(obstacle);
+        
+        // Set initial position (start from right edge)
+        obstacle.style.right = '0px';
+        
+        let obstaclePosition = 0;
+        
+        const moveObstacle = setInterval(() => {
+            obstaclePosition += gameSpeed;
+            obstacle.style.right = obstaclePosition + 'px';
+            
+            // Collision detection
+            const characterRect = gameCharacter.getBoundingClientRect();
+            const obstacleRect = obstacle.getBoundingClientRect();
+            
+            if (
+                !isJumping &&
+                characterRect.right > obstacleRect.left &&
+                characterRect.left < obstacleRect.right &&
+                characterRect.bottom > obstacleRect.top
+            ) {
+                // Collision detected
+                clearInterval(moveObstacle);
+                clearInterval(obstacleInterval);
+                clearInterval(scoreInterval);
+                gameOver.style.display = 'block';
+                finalScore.textContent = `Your score: ${score}`;
+                isGameOver = true;
+            }
+            
+            // Remove obstacle when it goes off screen
+            if (obstaclePosition > gameBoard.offsetWidth) {
+                clearInterval(moveObstacle);
+                if (obstacle.parentNode) {
+                    gameBoard.removeChild(obstacle);
+                }
+            }
+        }, 20);
+    }
+
+    function startGame() {
+        isGameOver = false;
+        score = 0;
+        gameSpeed = 5;
+        gameScore.textContent = `Score: ${score}`;
+        gameOver.style.display = 'none';
+        nextObstacleTime = 0;
+        
+        // Clear any existing obstacles
+        const existingObstacles = document.querySelectorAll('.game-obstacle');
+        existingObstacles.forEach(obstacle => {
+            if (obstacle.parentNode) {
+                gameBoard.removeChild(obstacle);
+            }
+        });
+        
+        // Reset character position
+        gameCharacter.style.bottom = '40px';
+        gameCharacter.style.left = '50px';
+        gameCharacter.textContent = "🛡️";
+        
+        // Start creating obstacles with random timing
+        obstacleInterval = setInterval(() => {
+            nextObstacleTime--;
+            if (nextObstacleTime <= 0) {
+                createObstacle();
+                // Set random time until next obstacle (1-3 seconds)
+                nextObstacleTime = 1 + Math.random() * 2;
+            }
+        }, 1000);
+        
+        // Update score
+        scoreInterval = setInterval(() => {
+            score++;
+            gameScore.textContent = `Score: ${score}`;
+            
+            // Increase difficulty
+            if (score % 10 === 0) {
+                gameSpeed += 0.5;
+            }
+        }, 100);
+    }
+
+    startBtn.addEventListener('click', startGame);
+    jumpBtn.addEventListener('click', jump);
+    restartBtn.addEventListener('click', startGame);
+    
+    // Keyboard controls
+    document.addEventListener('keydown', function(event) {
+        if ((event.code === 'Space' || event.key === 'ArrowUp') && !isGameOver) {
+            jump();
+        }
+    });
+        });
+    </script>
+</body>
+</html>

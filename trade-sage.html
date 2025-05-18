@@ -1,0 +1,2979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradSage | Professional Trading Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --primary-light: #81C784;
+            --primary-dark: #388E3C;
+            --secondary-color: #2196F3;
+            --danger-color: #F44336;
+            --warning-color: #FFC107;
+            --success-color: #4CAF50;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --bg-light: #FAFAFA;
+            --bg-dark: #121212;
+            --card-light: #FFFFFF;
+            --card-dark: #1E1E1E;
+            --border-light: #E0E0E0;
+            --border-dark: #424242;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #81C784;
+            --primary-light: #4CAF50;
+            --primary-dark: #388E3C;
+            --secondary-color: #64B5F6;
+            --danger-color: #E57373;
+            --warning-color: #FFD54F;
+            --success-color: #81C784;
+            --text-primary: #E0E0E0;
+            --text-secondary: #9E9E9E;
+            --bg-light: #121212;
+            --bg-dark: #000000;
+            --card-light: #1E1E1E;
+            --card-dark: #121212;
+            --border-light: #424242;
+            --border-dark: #616161;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-primary);
+            transition: var(--transition);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            padding: 20px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dashboard Cards */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #1976D2;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #D32F2F;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: var(--card-light);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            transition: var(--transition);
+            border: 1px solid var(--border-light);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .card-change {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .card-change.positive {
+            color: var(--success-color);
+        }
+
+        .card-change.negative {
+            color: var(--danger-color);
+        }
+
+        /* Trade Section */
+        .stocks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stock-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stock-ticker {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .stock-price {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 10px 0 5px;
+        }
+
+        .stock-change {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .stock-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+
+        .stock-chart {
+            height: 80px;
+            margin-top: 15px;
+        }
+
+        .stock-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stock-action {
+            flex: 1;
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .buy-action {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .buy-action:hover {
+            background-color: rgba(76, 175, 80, 0.2);
+        }
+
+        .sell-action {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+        }
+
+        .sell-action:hover {
+            background-color: rgba(244, 67, 54, 0.2);
+        }
+
+        .risk-indicator {
+            height: 4px;
+            background-color: #E0E0E0;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .risk-level {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        .risk-low {
+            background-color: var(--success-color);
+        }
+
+        .risk-medium {
+            background-color: var(--warning-color);
+        }
+
+        .risk-high {
+            background-color: var(--danger-color);
+        }
+
+        /* Portfolio Table */
+        .portfolio-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .portfolio-table th, .portfolio-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .portfolio-table th {
+            font-weight: 600;
+            color: var(--text-secondary);
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .portfolio-table tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .portfolio-amount.positive {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .portfolio-amount.negative {
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        /* Trade Form */
+        .trade-form {
+            background-color: var(--card-light);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            background-color: var(--bg-light);
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* Charts Container */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .chart-card {
+            padding: 20px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Risk Monitoring */
+        .risk-monitoring {
+            margin-top: 30px;
+        }
+
+        .risk-meters {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .risk-meter {
+            flex: 1;
+            text-align: center;
+        }
+
+        .risk-meter-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .risk-meter-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .risk-log {
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: var(--card-light);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 13px;
+            border: 1px solid var(--border-light);
+            margin-top: 15px;
+        }
+
+        .risk-log-entry {
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border-light);
+        }
+
+        .risk-log-timestamp {
+            color: var(--text-secondary);
+            margin-right: 10px;
+        }
+
+        .risk-log-message {
+            color: var(--text-primary);
+        }
+
+        .risk-log-warning {
+            color: var(--warning-color);
+        }
+
+        .risk-log-danger {
+            color: var(--danger-color);
+        }
+
+        /* Financial Feed */
+        .feed-container {
+            margin-top: 30px;
+        }
+
+        .feed-item {
+            background-color: var(--card-light);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        .feed-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .feed-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .feed-source {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+
+        .feed-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .feed-content {
+            line-height: 1.5;
+        }
+
+        /* Settings Section */
+        .settings-section {
+            margin-bottom: 30px;
+        }
+
+        .settings-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .settings-form {
+            background-color: var(--card-light);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+        }
+
+        /* Profile Section */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        .profile-info h2 {
+            margin-bottom: 5px;
+        }
+
+        .profile-meta {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background-color: var(--card-light);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Trade Modal */
+        .trade-modal-content {
+            max-width: 600px;
+        }
+
+        .trade-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .trade-stock {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .trade-price {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .trade-change {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        /* Danger Zone */
+        .danger-zone {
+            background-color: rgba(244, 67, 54, 0.1);
+            border: 1px dashed var(--danger-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .danger-zone-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--danger-color);
+        }
+
+        .danger-zone-header i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .danger-zone-title {
+            font-weight: 600;
+        }
+
+        .danger-zone-content {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs {
+                display: none;
+            }
+            
+            .trade-details {
+                flex-direction: column;
+            }
+            
+            .risk-meters {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-actions {
+                gap: 10px;
+            }
+            
+            .dashboard-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .text-muted {
+            color: var(--text-secondary);
+        }
+
+        .mt-10 {
+            margin-top: 10px;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-10 {
+            margin-bottom: 10px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* JSON Viewer */
+        .json-viewer {
+            background-color: var(--card-dark);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 13px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--border-dark);
+        }
+
+        .json-key {
+            color: #9CDCFE;
+        }
+
+        .json-value {
+            color: #CE9178;
+        }
+
+        .json-string {
+            color: #CE9178;
+        }
+
+        .json-number {
+            color: #B5CEA8;
+        }
+
+        .json-boolean {
+            color: #569CD6;
+        }
+
+        .json-null {
+            color: #569CD6;
+        }
+
+        /* Collapsible */
+        .collapsible {
+            cursor: pointer;
+            padding: 10px;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            background-color: var(--card-light);
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+
+        .collapsible:after {
+            content: '\25BC';
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .collapsible.active:after {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            padding: 0 10px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            margin-bottom: 10px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab:hover {
+            color: var(--primary-color);
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--card-dark);
+            color: var(--text-primary);
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Download Button */
+        .download-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .download-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-chart-line"></i>
+            <span>TradSage</span>
+        </div>
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-section="dashboard">Dashboard</div>
+            <div class="nav-tab" data-section="portfolio">Portfolio</div>
+            <div class="nav-tab" data-section="market">Market</div>
+            <div class="nav-tab" data-section="feed">Daily Feed</div>
+            <div class="nav-tab" data-section="risk">Risk Analysis</div>
+            <div class="nav-tab" data-section="settings">Settings</div>
+        </div>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="user-avatar">JD</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- Dashboard Section -->
+            <section class="section active" id="dashboard-section">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Trading Dashboard</h1>
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary" id="refreshData">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-outline" id="downloadDashboardReport">
+                            <i class="fas fa-download"></i> Download Report
+                        </button>
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Portfolio Value</div>
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="card-value">$45,678.90</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-caret-up"></i> 2.4% today
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Today's P/L</div>
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="card-value positive">+$1,234.56</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-caret-up"></i> 2.8% vs market
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Risk Exposure</div>
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="card-value">Medium</div>
+                        <div class="card-change negative">
+                            <i class="fas fa-caret-down"></i> 12% from target
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stocks-grid">
+                    <div class="card stock-card">
+                        <div class="stock-ticker">AAPL</div>
+                        <div class="card-title">Apple Inc.</div>
+                        <div class="stock-price">$175.34</div>
+                        <div class="stock-change positive">
+                            <i class="fas fa-caret-up"></i> 1.2% ($2.05)
+                        </div>
+                        <div class="stock-chart">
+                            <canvas id="aaplChart"></canvas>
+                        </div>
+                        <div class="stock-meta">
+                            <span>Risk: 4/10</span>
+                            <span>Volume: 45.2M</span>
+                        </div>
+                        <div class="stock-actions">
+                            <div class="stock-action buy-action" data-ticker="AAPL">
+                                <i class="fas fa-plus-circle"></i> Buy
+                            </div>
+                            <div class="stock-action sell-action" data-ticker="AAPL">
+                                <i class="fas fa-minus-circle"></i> Sell
+                            </div>
+                        </div>
+                        <div class="risk-indicator">
+                            <div class="risk-level risk-low" style="width: 40%;"></div>
+                        </div>
+                    </div>
+                    <div class="card stock-card">
+                        <div class="stock-ticker">TSLA</div>
+                        <div class="card-title">Tesla Inc.</div>
+                        <div class="stock-price">$256.78</div>
+                        <div class="stock-change negative">
+                            <i class="fas fa-caret-down"></i> 0.8% ($2.12)
+                        </div>
+                        <div class="stock-chart">
+                            <canvas id="tslaChart"></canvas>
+                        </div>
+                        <div class="stock-meta">
+                            <span>Risk: 7/10</span>
+                            <span>Volume: 32.1M</span>
+                        </div>
+                        <div class="stock-actions">
+                            <div class="stock-action buy-action" data-ticker="TSLA">
+                                <i class="fas fa-plus-circle"></i> Buy
+                            </div>
+                            <div class="stock-action sell-action" data-ticker="TSLA">
+                                <i class="fas fa-minus-circle"></i> Sell
+                            </div>
+                        </div>
+                        <div class="risk-indicator">
+                            <div class="risk-level risk-medium" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                    <div class="card stock-card">
+                        <div class="stock-ticker">AMZN</div>
+                        <div class="card-title">Amazon.com</div>
+                        <div class="stock-price">$112.45</div>
+                        <div class="stock-change positive">
+                            <i class="fas fa-caret-up"></i> 2.1% ($2.35)
+                        </div>
+                        <div class="stock-chart">
+                            <canvas id="amznChart"></canvas>
+                        </div>
+                        <div class="stock-meta">
+                            <span>Risk: 5/10</span>
+                            <span>Volume: 28.7M</span>
+                        </div>
+                        <div class="stock-actions">
+                            <div class="stock-action buy-action" data-ticker="AMZN">
+                                <i class="fas fa-plus-circle"></i> Buy
+                            </div>
+                            <div class="stock-action sell-action" data-ticker="AMZN">
+                                <i class="fas fa-minus-circle"></i> Sell
+                            </div>
+                        </div>
+                        <div class="risk-indicator">
+                            <div class="risk-level risk-medium" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                    <div class="card stock-card">
+                        <div class="stock-ticker">MSFT</div>
+                        <div class="card-title">Microsoft</div>
+                        <div class="stock-price">$312.67</div>
+                        <div class="stock-change positive">
+                            <i class="fas fa-caret-up"></i> 1.5% ($4.56)
+                        </div>
+                        <div class="stock-chart">
+                            <canvas id="msftChart"></canvas>
+                        </div>
+                        <div class="stock-meta">
+                            <span>Risk: 3/10</span>
+                            <span>Volume: 22.3M</span>
+                        </div>
+                        <div class="stock-actions">
+                            <div class="stock-action buy-action" data-ticker="MSFT">
+                                <i class="fas fa-plus-circle"></i> Buy
+                            </div>
+                            <div class="stock-action sell-action" data-ticker="MSFT">
+                                <i class="fas fa-minus-circle"></i> Sell
+                            </div>
+                        </div>
+                        <div class="risk-indicator">
+                            <div class="risk-level risk-low" style="width: 30%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div class="card-title">Portfolio Allocation</div>
+                            <div class="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Shows how your investments are distributed across different sectors</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="allocationChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div class="card-title">Risk vs Return</div>
+                            <div class="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Compares the risk and return profile of your holdings</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="riskReturnChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Portfolio Section -->
+            <section class="section" id="portfolio-section">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">My Portfolio</h1>
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary" id="newTradeBtn">
+                            <i class="fas fa-plus"></i> New Trade
+                        </button>
+                        <button class="btn btn-outline" id="downloadPortfolioReport">
+                            <i class="fas fa-download"></i> Download Report
+                        </button>
+                    </div>
+                </div>
+
+                <table class="portfolio-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Name</th>
+                            <th>Shares</th>
+                            <th>Avg Cost</th>
+                            <th>Market Value</th>
+                            <th>P/L</th>
+                            <th>P/L %</th>
+                            <th>Risk</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AAPL</td>
+                            <td>Apple Inc.</td>
+                            <td>15</td>
+                            <td>$145.67</td>
+                            <td>$2,630.10</td>
+                            <td class="portfolio-amount positive">+$445.05</td>
+                            <td class="portfolio-amount positive">+20.4%</td>
+                            <td><div class="risk-indicator"><div class="risk-level risk-low" style="width: 40%;"></div></div></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" data-ticker="AAPL" data-action="buy">Buy</button>
+                                <button class="btn btn-outline btn-sm" data-ticker="AAPL" data-action="sell">Sell</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>TSLA</td>
+                            <td>Tesla Inc.</td>
+                            <td>8</td>
+                            <td>$210.45</td>
+                            <td>$2,054.24</td>
+                            <td class="portfolio-amount positive">+$370.64</td>
+                            <td class="portfolio-amount positive">+22.0%</td>
+                            <td><div class="risk-indicator"><div class="risk-level risk-medium" style="width: 70%;"></div></div></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" data-ticker="TSLA" data-action="buy">Buy</button>
+                                <button class="btn btn-outline btn-sm" data-ticker="TSLA" data-action="sell">Sell</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>MSFT</td>
+                            <td>Microsoft</td>
+                            <td>10</td>
+                            <td>$280.12</td>
+                            <td>$3,126.70</td>
+                            <td class="portfolio-amount positive">+$325.50</td>
+                            <td class="portfolio-amount positive">+11.6%</td>
+                            <td><div class="risk-indicator"><div class="risk-level risk-low" style="width: 30%;"></div></div></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" data-ticker="MSFT" data-action="buy">Buy</button>
+                                <button class="btn btn-outline btn-sm" data-ticker="MSFT" data-action="sell">Sell</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>AMZN</td>
+                            <td>Amazon.com</td>
+                            <td>5</td>
+                            <td>$105.78</td>
+                            <td>$562.25</td>
+                            <td class="portfolio-amount positive">+$33.35</td>
+                            <td class="portfolio-amount positive">+6.3%</td>
+                            <td><div class="risk-indicator"><div class="risk-level risk-medium" style="width: 50%;"></div></div></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" data-ticker="AMZN" data-action="buy">Buy</button>
+                                <button class="btn btn-outline btn-sm" data-ticker="AMZN" data-action="sell">Sell</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="charts-container mt-20">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div class="card-title">Portfolio Performance</div>
+                            <div class="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Shows your portfolio value over time compared to market benchmarks</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div class="card-title">Dividend Income</div>
+                            <div class="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Projects your expected dividend income for the next 12 months</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="dividendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Market Section -->
+            <section class="section" id="market-section">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Market Overview</h1>
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary" id="refreshMarketData">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-outline" id="downloadMarketReport">
+                            <i class="fas fa-download"></i> Download Report
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" data-tab="stocks">Stocks</div>
+                    <div class="tab" data-tab="indices">Indices</div>
+                    <div class="tab" data-tab="crypto">Crypto</div>
+                    <div class="tab" data-tab="forex">Forex</div>
+                </div>
+
+                <div class="tab-content active" id="stocks-tab">
+                    <div class="stocks-grid">
+                        <div class="card stock-card">
+                            <div class="stock-ticker">NVDA</div>
+                            <div class="card-title">NVIDIA</div>
+                            <div class="stock-price">$456.78</div>
+                            <div class="stock-change positive">
+                                <i class="fas fa-caret-up"></i> 3.2% ($14.23)
+                            </div>
+                            <div class="stock-chart">
+                                <canvas id="nvdaChart"></canvas>
+                            </div>
+                            <div class="stock-meta">
+                                <span>Risk: 8/10</span>
+                                <span>Volume: 35.6M</span>
+                            </div>
+                            <div class="stock-actions">
+                                <div class="stock-action buy-action" data-ticker="NVDA">
+                                    <i class="fas fa-plus-circle"></i> Buy
+                                </div>
+                                <div class="stock-action sell-action" data-ticker="NVDA">
+                                    <i class="fas fa-minus-circle"></i> Sell
+                                </div>
+                            </div>
+                            <div class="risk-indicator">
+                                <div class="risk-level risk-high" style="width: 80%;"></div>
+                            </div>
+                        </div>
+                        <div class="card stock-card">
+                            <div class="stock-ticker">GOOGL</div>
+                            <div class="card-title">Alphabet</div>
+                            <div class="stock-price">$123.89</div>
+                            <div class="stock-change negative">
+                                <i class="fas fa-caret-down"></i> 0.4% ($0.52)
+                            </div>
+                            <div class="stock-chart">
+                                <canvas id="googlChart"></canvas>
+                            </div>
+                            <div class="stock-meta">
+                                <span>Risk: 6/10</span>
+                                <span>Volume: 18.9M</span>
+                            </div>
+                            <div class="stock-actions">
+                                <div class="stock-action buy-action" data-ticker="GOOGL">
+                                    <i class="fas fa-plus-circle"></i> Buy
+                                </div>
+                                <div class="stock-action sell-action" data-ticker="GOOGL">
+                                    <i class="fas fa-minus-circle"></i> Sell
+                                </div>
+                            </div>
+                            <div class="risk-indicator">
+                                <div class="risk-level risk-medium" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                        <div class="card stock-card">
+                            <div class="stock-ticker">META</div>
+                            <div class="card-title">Meta Platforms</div>
+                            <div class="stock-price">$289.45</div>
+                            <div class="stock-change positive">
+                                <i class="fas fa-caret-up"></i> 1.8% ($5.12)
+                            </div>
+                            <div class="stock-chart">
+                                <canvas id="metaChart"></canvas>
+                            </div>
+                            <div class="stock-meta">
+                                <span>Risk: 5/10</span>
+                                <span>Volume: 15.3M</span>
+                            </div>
+                            <div class="stock-actions">
+                                <div class="stock-action buy-action" data-ticker="META">
+                                    <i class="fas fa-plus-circle"></i> Buy
+                                </div>
+                                <div class="stock-action sell-action" data-ticker="META">
+                                    <i class="fas fa-minus-circle"></i> Sell
+                                </div>
+                            </div>
+                            <div class="risk-indicator">
+                                <div class="risk-level risk-medium" style="width: 50%;"></div>
+                            </div>
+                        </div>
+                        <div class="card stock-card">
+                            <div class="stock-ticker">JPM</div>
+                            <div class="card-title">JPMorgan Chase</div>
+                            <div class="stock-price">$145.67</div>
+                            <div class="stock-change positive">
+                                <i class="fas fa-caret-up"></i> 0.9% ($1.30)
+                            </div>
+                            <div class="stock-chart">
+                                <canvas id="jpmChart"></canvas>
+                            </div>
+                            <div class="stock-meta">
+                                <span>Risk: 4/10</span>
+                                <span>Volume: 8.7M</span>
+                            </div>
+                            <div class="stock-actions">
+                                <div class="stock-action buy-action" data-ticker="JPM">
+                                    <i class="fas fa-plus-circle"></i> Buy
+                                </div>
+                                <div class="stock-action sell-action" data-ticker="JPM">
+                                    <i class="fas fa-minus-circle"></i> Sell
+                                </div>
+                            </div>
+                            <div class="risk-indicator">
+                                <div class="risk-level risk-low" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="indices-tab">
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">S&P 500</div>
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="card-value">4,567.89</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-caret-up"></i> 0.8% (36.45)
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">NASDAQ</div>
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="card-value">14,345.67</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-caret-up"></i> 1.2% (170.23)
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">DOW JONES</div>
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="card-value">34,567.89</div>
+                            <div class="card-change negative">
+                                <i class="fas fa-caret-down"></i> 0.3% (104.56)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="crypto-tab">
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Bitcoin</div>
+                                <i class="fab fa-bitcoin"></i>
+                            </div>
+                            <div class="card-value">$29,456.78</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-caret-up"></i> 2.3% ($661.45)
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Ethereum</div>
+                                <i class="fab fa-ethereum"></i>
+                            </div>
+                            <div class="card-value">$1,845.67</div>
+                            <div class="card-change negative">
+                                <i class="fas fa-caret-down"></i> 0.8% ($14.78)
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Cardano</div>
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="card-value">$0.3456</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-caret-up"></i> 1.5% ($0.0051)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="forex-tab">
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">EUR/USD</div>
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="card-value">1.0987</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-caret-up"></i> 0.2% (0.0021)
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">GBP/USD</div>
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="card-value">1.2765</div>
+                            <div class="card-change negative">
+                                <i class="fas fa-caret-down"></i> 0.3% (0.0038)
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">USD/JPY</div>
+                                <i class="fas fa-yen-sign"></i>
+                            </div>
+                            <div class="card-value">142.34</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-caret-up"></i> 0.5% (0.71)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Daily Feed Section -->
+            <section class="section" id="feed-section">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Financial Awareness Feed</h1>
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary" id="refreshFeed">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div class="feed-container">
+                    <div class="feed-item">
+                        <div class="feed-header">
+                            <div class="feed-source">Market Watch</div>
+                            <div class="feed-time">10 min ago</div>
+                        </div>
+                        <div class="feed-content">
+                            Federal Reserve Chair Jerome Powell signals potential pause in rate hikes amid cooling inflation data. Markets respond positively with tech stocks leading gains.
+                        </div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-header">
+                            <div class="feed-source">Financial Times</div>
+                            <div class="feed-time">35 min ago</div>
+                        </div>
+                        <div class="feed-content">
+                            New regulations proposed for cryptocurrency exchanges could significantly impact trading volumes and market liquidity. Industry leaders express mixed reactions.
+                        </div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-header">
+                            <div class="feed-source">Bloomberg</div>
+                            <div class="feed-time">1 hour ago</div>
+                        </div>
+                        <div class="feed-content">
+                            Apple announces record quarterly earnings driven by services growth and strong iPhone sales. Stock rises 4% in after-hours trading.
+                        </div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-header">
+                            <div class="feed-source">Investor Education</div>
+                            <div class="feed-time">2 hours ago</div>
+                        </div>
+                        <div class="feed-content">
+                            Understanding portfolio diversification: Why spreading your investments across different asset classes can help manage risk during market volatility.
+                        </div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-header">
+                            <div class="feed-source">Economic Times</div>
+                            <div class="feed-time">3 hours ago</div>
+                        </div>
+                        <div class="feed-content">
+                            Global supply chain improvements signal potential relief for manufacturing sectors. Analysts predict positive impact on related stocks in Q3 earnings.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Risk Analysis Section -->
+            <section class="section" id="risk-section">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Risk Analysis</h1>
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary" id="refreshRiskData">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-outline" id="downloadRiskReport">
+                            <i class="fas fa-download"></i> Download Report
+                        </button>
+                    </div>
+                </div>
+
+                <div class="risk-meters">
+                    <div class="risk-meter">
+                        <div class="risk-meter-value" id="riskScore">42</div>
+                        <div class="risk-meter-label">Risk Score</div>
+                    </div>
+                    <div class="risk-meter">
+                        <div class="risk-meter-value" id="suspiciousTime">0s</div>
+                        <div class="risk-meter-label">Suspicious Activity</div>
+                    </div>
+                    <div class="risk-meter">
+                        <div class="risk-meter-value" id="riskLevel">Low</div>
+                        <div class="risk-meter-label">Risk Level</div>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div class="card-title">Risk Analysis</div>
+                            <div class="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Shows the distribution of different risk factors in your recent activity</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="riskDonutChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div class="card-title">Risk Over Time</div>
+                            <div class="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Tracks your risk score over the past 30 days</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="riskLineChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="collapsible">
+                    <i class="fas fa-list"></i> View Activity Log
+                </button>
+                <div class="collapsible-content">
+                    <div class="risk-log" id="riskLog">
+                        <div class="risk-log-entry">
+                            <span class="risk-log-timestamp">[10:42:35]</span>
+                            <span class="risk-log-message">User logged in from device "iPhone 13"</span>
+                        </div>
+                        <div class="risk-log-entry">
+                            <span class="risk-log-timestamp">[10:43:12]</span>
+                            <span class="risk-log-message">Viewed portfolio summary</span>
+                        </div>
+                        <div class="risk-log-entry">
+                            <span class="risk-log-timestamp">[10:44:03]</span>
+                            <span class="risk-log-message">Initiated buy order for 5 shares of AAPL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="collapsible mt-20">
+                    <i class="fas fa-code"></i> View Raw Data
+                </button>
+                <div class="collapsible-content">
+                    <div class="json-viewer" id="jsonViewer"></div>
+                </div>
+
+                <div class="danger-zone">
+                    <div class="danger-zone-header">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div class="danger-zone-title">Danger Zone</div>
+                    </div>
+                    <div class="danger-zone-content">
+                        These actions are irreversible. Please proceed with caution. Deleting your account will permanently remove all your data from our systems.
+                    </div>
+                    <button class="btn btn-danger" id="deleteAccountBtn">
+                        <i class="fas fa-trash-alt"></i> Delete Account
+                    </button>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="section" id="settings-section">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Account Settings</h1>
+                </div>
+
+                <div class="profile-header">
+                    <div class="profile-avatar">JD</div>
+                    <div class="profile-info">
+                        <h2>John Doe</h2>
+                        <div class="profile-meta">Premium Member since June 2021</div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-title">Personal Information</h3>
+                    <div class="settings-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control" value="John">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control" value="Doe">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" value="john.doe@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" value="+1 (555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary">Update Profile</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-title">Security</h3>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" placeholder="Enter new password">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" placeholder="Confirm new password">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Two-Factor Authentication</label>
+                            <select class="form-control">
+                                <option>Enabled</option>
+                                <option>Disabled</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary">Update Security Settings</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-title">Linked Accounts</h3>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label class="form-label">Bank Account</label>
+                            <select class="form-control">
+                                <option>Chase ****4567 (Primary)</option>
+                                <option>Wells Fargo ****8910</option>
+                                <option>Add New Bank Account</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Trading Preferences</label>
+                            <select class="form-control">
+                                <option>Active Trader</option>
+                                <option>Long-Term Investor</option>
+                                <option>Balanced Approach</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Risk Tolerance</label>
+                            <select class="form-control">
+                                <option>Conservative</option>
+                                <option selected>Moderate</option>
+                                <option>Aggressive</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary">Update Account Settings</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-title">Notifications</h3>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" checked> Email Alerts
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" checked> SMS Notifications
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox"> Push Notifications
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Alert Frequency</label>
+                            <select class="form-control">
+                                <option>Immediate</option>
+                                <option selected>Daily Summary</option>
+                                <option>Weekly Digest</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary">Update Notification Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Trade Modal -->
+    <div class="modal" id="tradeModal">
+        <div class="modal-content trade-modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="tradeModalTitle">Place Trade Order</div>
+                <button class="modal-close" id="tradeModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="trade-details">
+                    <div>
+                        <div class="trade-stock" id="tradeStockTicker">AAPL</div>
+                        <div class="trade-stock-name" id="tradeStockName">Apple Inc.</div>
+                    </div>
+                    <div>
+                        <div class="trade-price" id="tradeStockPrice">$175.34</div>
+                        <div class="trade-change positive" id="tradeStockChange">
+                            <i class="fas fa-caret-up"></i> 1.2% ($2.05)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trade-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Action</label>
+                            <select class="form-control" id="tradeAction">
+                                <option value="buy">Buy</option>
+                                <option value="sell">Sell</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Order Type</label>
+                            <select class="form-control" id="tradeType">
+                                <option value="market">Market</option>
+                                <option value="limit">Limit</option>
+                                <option value="stop">Stop</option>
+                                <option value="stop_limit">Stop Limit</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" id="limitPriceGroup" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">Limit Price</label>
+                            <input type="text" class="form-control" id="limitPrice" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Duration</label>
+                            <select class="form-control" id="limitDuration">
+                                <option>Day</option>
+                                <option>GTC</option>
+                                <option>IOC</option>
+                                <option>FOK</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" id="stopPriceGroup" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">Stop Price</label>
+                            <input type="text" class="form-control" id="stopPrice" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="tradeQuantity" value="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Estimated Cost</label>
+                        <input type="text" class="form-control" id="tradeCost" value="$175.34" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Risk Assessment</label>
+                        <div class="risk-indicator">
+                            <div class="risk-level risk-low" style="width: 40%;"></div>
+                        </div>
+                        <div class="text-muted mt-10" id="tradeRiskNote">Low risk trade based on your portfolio and risk tolerance</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="tradeCancel">Cancel</button>
+                <button class="btn btn-primary" id="tradeConfirm">Confirm Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Risk Warning Modal -->
+    <div class="modal" id="riskWarningModal">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: var(--warning-color); color: #000;">
+                <div class="modal-title"><i class="fas fa-exclamation-triangle"></i> Suspicious Activity Detected</div>
+                <button class="modal-close" id="riskWarningModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Our system has detected unusual trading activity on your account. This may include:</p>
+                <ul style="margin: 15px 0 15px 20px;">
+                    <li>High-frequency trading</li>
+                    <li>Large position changes</li>
+                    <li>Unusual order patterns</li>
+                </ul>
+                <p>If this activity was not authorized by you, please contact our support team immediately.</p>
+                <p>Your current risk score: <strong id="modalRiskScore">45</strong></p>
+                <div class="risk-indicator" style="margin: 15px 0;">
+                    <div class="risk-level risk-medium" style="width: 45%;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="riskWarningDismiss">Dismiss</button>
+                <button class="btn btn-primary" id="riskWarningContact">Contact Support</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Blocked Modal -->
+    <div class="modal" id="accountBlockedModal">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: var(--danger-color); color: white;">
+                <div class="modal-title"><i class="fas fa-ban"></i> Trading Temporarily Restricted</div>
+                <button class="modal-close" id="accountBlockedModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Due to multiple suspicious activities detected on your account, we have temporarily restricted trading as a security precaution.</p>
+                <p>Our security team will review the activity and contact you shortly. This process typically takes 1-2 business days.</p>
+                <p>If you believe this is an error, please contact our support team immediately at <strong>support@tradsage.com</strong> or call <strong>1-800-TRAD-SAGE</strong>.</p>
+                <div class="risk-log" style="margin-top: 20px; max-height: 150px;">
+                    <div class="risk-log-entry">
+                        <span class="risk-log-timestamp">[11:23:45]</span>
+                        <span class="risk-log-message risk-log-warning">Warning: Multiple large orders placed in short period</span>
+                    </div>
+                    <div class="risk-log-entry">
+                        <span class="risk-log-timestamp">[11:24:12]</span>
+                        <span class="risk-log-message risk-log-warning">Warning: Unusual trading pattern detected</span>
+                    </div>
+                    <div class="risk-log-entry">
+                        <span class="risk-log-timestamp">[11:25:03]</span>
+                        <span class="risk-log-message risk-log-danger">Trading restricted due to suspicious activity</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="accountBlockedContact">Contact Support</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Confirm Account Deletion</div>
+                <button class="modal-close" id="deleteModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>You are about to permanently delete your TradSage account. This action cannot be undone. All your data, including trading history and portfolio information will be permanently erased.</p>
+                <p>To confirm deletion, please enter your password below:</p>
+                <div class="form-group mt-20">
+                    <input type="password" class="form-control" id="deletePassword" placeholder="Enter your password">
+                </div>
+                <div class="form-group mt-10">
+                    <label class="form-label">Reason for leaving (optional)</label>
+                    <select class="form-control">
+                        <option>Select a reason...</option>
+                        <option>Found a better platform</option>
+                        <option>Privacy concerns</option>
+                        <option>Too expensive</option>
+                        <option>Poor customer service</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="deleteCancel">Cancel</button>
+                <button class="btn btn-danger" id="deleteConfirm">Delete Account</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const themeToggle = document.getElementById('themeToggle');
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const sections = document.querySelectorAll('.section');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const collapsibles = document.querySelectorAll('.collapsible');
+        const tradeModal = document.getElementById('tradeModal');
+        const tradeModalClose = document.getElementById('tradeModalClose');
+        const tradeCancel = document.getElementById('tradeCancel');
+        const tradeConfirm = document.getElementById('tradeConfirm');
+        const tradeAction = document.getElementById('tradeAction');
+        const tradeType = document.getElementById('tradeType');
+        const limitPriceGroup = document.getElementById('limitPriceGroup');
+        const stopPriceGroup = document.getElementById('stopPriceGroup');
+        const tradeQuantity = document.getElementById('tradeQuantity');
+        const tradeCost = document.getElementById('tradeCost');
+        const riskWarningModal = document.getElementById('riskWarningModal');
+        const riskWarningModalClose = document.getElementById('riskWarningModalClose');
+        const riskWarningDismiss = document.getElementById('riskWarningDismiss');
+        const riskWarningContact = document.getElementById('riskWarningContact');
+        const accountBlockedModal = document.getElementById('accountBlockedModal');
+        const accountBlockedModalClose = document.getElementById('accountBlockedModalClose');
+        const accountBlockedContact = document.getElementById('accountBlockedContact');
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteModalClose = document.getElementById('deleteModalClose');
+        const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+        const deleteCancel = document.getElementById('deleteCancel');
+        const deleteConfirm = document.getElementById('deleteConfirm');
+        const riskScoreElement = document.getElementById('riskScore');
+        const suspiciousTimeElement = document.getElementById('suspiciousTime');
+        const riskLevelElement = document.getElementById('riskLevel');
+        const riskLog = document.getElementById('riskLog');
+        const jsonViewer = document.getElementById('jsonViewer');
+        const downloadDashboardReport = document.getElementById('downloadDashboardReport');
+        const downloadPortfolioReport = document.getElementById('downloadPortfolioReport');
+        const downloadMarketReport = document.getElementById('downloadMarketReport');
+        const downloadRiskReport = document.getElementById('downloadRiskReport');
+        const newTradeBtn = document.getElementById('newTradeBtn');
+        const refreshData = document.getElementById('refreshData');
+        const refreshMarketData = document.getElementById('refreshMarketData');
+        const refreshRiskData = document.getElementById('refreshRiskData');
+        const refreshFeed = document.getElementById('refreshFeed');
+        const buyActions = document.querySelectorAll('.buy-action');
+        const sellActions = document.querySelectorAll('.sell-action');
+
+        // Theme Toggle
+        let darkMode = false;
+        
+        themeToggle.addEventListener('click', () => {
+            darkMode = !darkMode;
+            document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+            themeToggle.innerHTML = darkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            localStorage.setItem('darkMode', darkMode);
+        });
+
+        // Check for saved theme preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            darkMode = true;
+            document.body.setAttribute('data-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        // Navigation Tabs
+        navTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                navTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                sections.forEach(section => section.classList.remove('active'));
+                document.getElementById(`${tab.dataset.section}-section`).classList.add('active');
+            });
+        });
+
+        // Section Tabs
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                tabContents.forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+            });
+        });
+
+        // Collapsible Sections
+        collapsibles.forEach(collapsible => {
+            collapsible.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
+        });
+
+        // Trade Modal Logic
+        function openTradeModal(ticker, action) {
+            const stockCards = document.querySelectorAll('.stock-card');
+            let stockData = {};
+            
+            stockCards.forEach(card => {
+                if (card.querySelector('.stock-ticker').textContent === ticker) {
+                    stockData = {
+                        ticker: ticker,
+                        name: card.querySelector('.card-title').textContent,
+                        price: card.querySelector('.stock-price').textContent,
+                        change: card.querySelector('.stock-change').innerHTML,
+                        risk: card.querySelector('.risk-level').style.width
+                    };
+                }
+            });
+            
+            document.getElementById('tradeStockTicker').textContent = stockData.ticker;
+            document.getElementById('tradeStockName').textContent = stockData.name;
+            document.getElementById('tradeStockPrice').textContent = stockData.price;
+            document.getElementById('tradeStockChange').innerHTML = stockData.change;
+            document.getElementById('tradeAction').value = action;
+            document.getElementById('tradeQuantity').value = 1;
+            updateTradeCost();
+            
+            tradeModal.classList.add('active');
+        }
+
+        // Buy/Sell Actions
+        buyActions.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const ticker = btn.dataset.ticker;
+                openTradeModal(ticker, 'buy');
+            });
+        });
+
+        sellActions.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const ticker = btn.dataset.ticker;
+                openTradeModal(ticker, 'sell');
+            });
+        });
+
+        // New Trade Button
+        newTradeBtn.addEventListener('click', () => {
+            openTradeModal('AAPL', 'buy');
+        });
+
+        // Trade Type Change
+        tradeType.addEventListener('change', (e) => {
+            limitPriceGroup.style.display = e.target.value === 'limit' || e.target.value === 'stop_limit' ? 'flex' : 'none';
+            stopPriceGroup.style.display = e.target.value === 'stop' || e.target.value === 'stop_limit' ? 'flex' : 'none';
+        });
+
+        // Update Trade Cost
+        function updateTradeCost() {
+            const priceText = document.getElementById('tradeStockPrice').textContent;
+            const price = parseFloat(priceText.replace('$', '').replace(',', ''));
+            const quantity = parseInt(tradeQuantity.value) || 0;
+            const cost = price * quantity;
+            tradeCost.value = `$${cost.toFixed(2)}`;
+        }
+
+        tradeQuantity.addEventListener('input', updateTradeCost);
+
+        // Trade Modal Close
+        tradeModalClose.addEventListener('click', () => {
+            tradeModal.classList.remove('active');
+        });
+
+        tradeCancel.addEventListener('click', () => {
+            tradeModal.classList.remove('active');
+        });
+
+        // Trade Confirm
+        tradeConfirm.addEventListener('click', () => {
+            const action = tradeAction.value;
+            const ticker = document.getElementById('tradeStockTicker').textContent;
+            const quantity = tradeQuantity.value;
+            
+            showAlert(`${action === 'buy' ? 'Buy' : 'Sell'} order for ${quantity} shares of ${ticker} placed successfully`, 'success');
+            logRiskEvent(`${action === 'buy' ? 'Buy' : 'Sell'} order executed for ${quantity} shares of ${ticker}`, action === 'buy' ? 5 : 10);
+            tradeModal.classList.remove('active');
+        });
+
+        // Risk Monitoring System
+        let suspiciousTimer = 0;
+        let riskScore = 42;
+        let riskInterval;
+
+        function startRiskMonitoring() {
+            riskInterval = setInterval(() => {
+                // Randomly increase risk score based on activity
+                if (Math.random() > 0.7) {
+                    const increase = Math.floor(Math.random() * 5) + 1;
+                    riskScore = Math.min(100, riskScore + increase);
+                    updateRiskDisplay();
+                    
+                    // Log suspicious activity after 30 seconds
+                    suspiciousTimer++;
+                    suspiciousTimeElement.textContent = `${suspiciousTimer}s`;
+                    
+                    if (suspiciousTimer === 40) {
+                        showRiskWarning();
+                    } else if (suspiciousTimer === 50) {
+                        blockAccount();
+                    }
+                } else if (riskScore > 30 && Math.random() > 0.5) {
+                    // Randomly decrease risk score
+                    const decrease = Math.floor(Math.random() * 3) + 1;
+                    riskScore = Math.max(0, riskScore - decrease);
+                    updateRiskDisplay();
+                    
+                    if (riskScore < 40) {
+                        suspiciousTimer = 0;
+                        suspiciousTimeElement.textContent = '0s';
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateRiskDisplay() {
+            riskScoreElement.textContent = riskScore;
+            
+            if (riskScore < 40) {
+                riskLevelElement.textContent = 'Low';
+                riskLevelElement.style.color = 'var(--success-color)';
+            } else if (riskScore < 70) {
+                riskLevelElement.textContent = 'Medium';
+                riskLevelElement.style.color = 'var(--warning-color)';
+            } else {
+                riskLevelElement.textContent = 'High';
+                riskLevelElement.style.color = 'var(--danger-color)';
+            }
+        }
+
+        function logRiskEvent(message, scoreImpact = 0) {
+            const now = new Date();
+            const timestamp = `[${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}]`;
+            
+            const logEntry = document.createElement('div');
+            logEntry.classList.add('risk-log-entry');
+            
+            const timeSpan = document.createElement('span');
+            timeSpan.classList.add('risk-log-timestamp');
+            timeSpan.textContent = timestamp;
+            
+            const messageSpan = document.createElement('span');
+            messageSpan.classList.add('risk-log-message');
+            messageSpan.textContent = message;
+            
+            logEntry.appendChild(timeSpan);
+            logEntry.appendChild(messageSpan);
+            riskLog.appendChild(logEntry);
+            riskLog.scrollTop = riskLog.scrollHeight;
+            
+            // Update risk score
+            riskScore = Math.min(100, Math.max(0, riskScore + scoreImpact));
+            updateRiskDisplay();
+            
+            // Update JSON viewer
+            updateJsonViewer();
+        }
+
+        function updateJsonViewer() {
+            const riskData = {
+                timestamp: new Date().toISOString(),
+                riskScore: riskScore,
+                riskLevel: riskScore < 40 ? 'Low' : riskScore < 70 ? 'Medium' : 'High',
+                suspiciousActivityDuration: `${suspiciousTimer}s`,
+                recentEvents: Array.from(riskLog.children).slice(-5).map(el => ({
+                    time: el.querySelector('.risk-log-timestamp').textContent,
+                    message: el.querySelector('.risk-log-message').textContent
+                })),
+                metrics: {
+                    truePositives: Math.floor(riskScore * 0.7),
+                    trueNegatives: 100 - riskScore,
+                    falsePositives: Math.floor(riskScore * 0.1),
+                    falseNegatives: Math.floor(riskScore * 0.2)
+                }
+            };
+            
+            jsonViewer.textContent = JSON.stringify(riskData, null, 2);
+            syntaxHighlight(jsonViewer);
+        }
+
+        function syntaxHighlight(element) {
+            const json = element.textContent;
+            element.innerHTML = '';
+            
+            const regex = /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g;
+            const jsonText = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            
+            let highlighted = jsonText.replace(regex, match => {
+                let cls = 'json-number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'json-key';
+                    } else {
+                        cls = 'json-string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'json-boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'json-null';
+                }
+                return `<span class="${cls}">${match}</span>`;
+            });
+            
+            element.innerHTML = highlighted;
+        }
+
+        function showRiskWarning() {
+            document.getElementById('modalRiskScore').textContent = riskScore;
+            riskWarningModal.classList.add('active');
+        }
+
+        function blockAccount() {
+            accountBlockedModal.classList.add('active');
+            clearInterval(riskInterval);
+        }
+
+        riskWarningModalClose.addEventListener('click', () => {
+            riskWarningModal.classList.remove('active');
+        });
+
+        riskWarningDismiss.addEventListener('click', () => {
+            riskWarningModal.classList.remove('active');
+            logRiskEvent('User dismissed risk warning', -10);
+        });
+
+        riskWarningContact.addEventListener('click', () => {
+            riskWarningModal.classList.remove('active');
+            showAlert('Our support team will contact you shortly.', 'info');
+            logRiskEvent('User contacted support about risk warning', -15);
+        });
+
+        accountBlockedModalClose.addEventListener('click', () => {
+            accountBlockedModal.classList.remove('active');
+        });
+
+        accountBlockedContact.addEventListener('click', () => {
+            accountBlockedModal.classList.remove('active');
+            showAlert('Our support team will contact you shortly.', 'info');
+        });
+
+        // Delete Account Modal
+        deleteAccountBtn.addEventListener('click', () => {
+            deleteModal.classList.add('active');
+        });
+
+        deleteModalClose.addEventListener('click', () => {
+            deleteModal.classList.remove('active');
+        });
+
+        deleteCancel.addEventListener('click', () => {
+            deleteModal.classList.remove('active');
+        });
+
+        deleteConfirm.addEventListener('click', () => {
+            deleteModal.classList.remove('active');
+            showAlert('Your account deletion request has been submitted. Our team will process it within 5 business days.', 'warning');
+            logRiskEvent('Account deletion requested', 30);
+        });
+
+        // Download Reports
+        function downloadReport(type) {
+            const content = generateReportContent(type);
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `tradsage_${type}_report_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showAlert(`${type.charAt(0).toUpperCase() + type.slice(1)} report downloaded successfully`, 'success');
+            logRiskEvent(`${type} report downloaded`, 2);
+        }
+
+        function generateReportContent(type) {
+            const now = new Date();
+            let content = `TradSage ${type.toUpperCase()} Report\n`;
+            content += `Generated: ${now.toLocaleString()}\n\n`;
+            
+            if (type === 'dashboard') {
+                content += `PORTFOLIO SUMMARY\n`;
+                content += `Current Value: $45,678.90\n`;
+                content += `Today's P/L: +$1,234.56 (+2.4%)\n`;
+                content += `Risk Exposure: Medium\n\n`;
+                content += `TOP HOLDINGS\n`;
+                content += `AAPL: $2,630.10 (+20.4%)\n`;
+                content += `TSLA: $2,054.24 (+22.0%)\n`;
+                content += `MSFT: $3,126.70 (+11.6%)\n`;
+                content += `AMZN: $562.25 (+6.3%)\n`;
+            } else if (type === 'portfolio') {
+                content += `PORTFOLIO DETAILS\n`;
+                content += `Symbol    Shares    Avg Cost    Market Value    P/L    P/L%\n`;
+                content += `AAPL      15       $145.67      $2,630.10      +$445.05   +20.4%\n`;
+                content += `TSLA      8        $210.45      $2,054.24      +$370.64   +22.0%\n`;
+                content += `MSFT      10       $280.12      $3,126.70      +$325.50   +11.6%\n`;
+                content += `AMZN      5        $105.78      $562.25        +$33.35    +6.3%\n`;
+            } else if (type === 'market') {
+                content += `MARKET DATA\n`;
+                content += `STOCKS\n`;
+                content += `AAPL: $175.34 (+1.2%)\n`;
+                content += `TSLA: $256.78 (-0.8%)\n`;
+                content += `MSFT: $312.67 (+1.5%)\n`;
+                content += `AMZN: $112.45 (+2.1%)\n\n`;
+                content += `INDICES\n`;
+                content += `S&P 500: 4,567.89 (+0.8%)\n`;
+                content += `NASDAQ: 14,345.67 (+1.2%)\n`;
+                content += `DOW JONES: 34,567.89 (-0.3%)\n`;
+            } else if (type === 'risk') {
+                content += `RISK ANALYSIS\n`;
+                content += `Current Risk Score: ${riskScore}\n`;
+                content += `Risk Level: ${riskScore < 40 ? 'Low' : riskScore < 70 ? 'Medium' : 'High'}\n`;
+                content += `Suspicious Activity Duration: ${suspiciousTimer}s\n\n`;
+                content += `RECENT ACTIVITY\n`;
+                Array.from(riskLog.children).slice(-5).forEach(entry => {
+                    content += `${entry.querySelector('.risk-log-timestamp').textContent} ${entry.querySelector('.risk-log-message').textContent}\n`;
+                });
+            }
+            
+            return content;
+        }
+
+        downloadDashboardReport.addEventListener('click', () => downloadReport('dashboard'));
+        downloadPortfolioReport.addEventListener('click', () => downloadReport('portfolio'));
+        downloadMarketReport.addEventListener('click', () => downloadReport('market'));
+        downloadRiskReport.addEventListener('click', () => downloadReport('risk'));
+
+        // Refresh Buttons
+        refreshData.addEventListener('click', () => {
+            showAlert('Dashboard data refreshed', 'info');
+        });
+
+        refreshMarketData.addEventListener('click', () => {
+            showAlert('Market data refreshed', 'info');
+        });
+
+        refreshRiskData.addEventListener('click', () => {
+            showAlert('Risk data refreshed', 'info');
+        });
+
+        refreshFeed.addEventListener('click', () => {
+            showAlert('Feed refreshed', 'info');
+        });
+
+        // Show Alert
+        function showAlert(message, type = 'info') {
+            const alert = document.createElement('div');
+            alert.classList.add('alert', `alert-${type}`);
+            alert.textContent = message;
+            
+            // Position the alert (implementation depends on your layout)
+            document.body.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        // Initialize Charts
+        function initCharts() {
+            // Risk Donut Chart
+            const riskDonutCtx = document.getElementById('riskDonutChart').getContext('2d');
+            new Chart(riskDonutCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['True Positives', 'True Negatives', 'False Positives', 'False Negatives'],
+                    datasets: [{
+                        data: [35, 58, 7, 12],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.7)',
+                            'rgba(33, 150, 243, 0.7)',
+                            'rgba(255, 193, 7, 0.7)',
+                            'rgba(244, 67, 54, 0.7)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Risk Line Chart
+            const riskLineCtx = document.getElementById('riskLineChart').getContext('2d');
+            new Chart(riskLineCtx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 30}, (_, i) => `Day ${i+1}`),
+                    datasets: [{
+                        label: 'Risk Score',
+                        data: Array.from({length: 30}, () => Math.floor(Math.random() * 30) + 20),
+                        borderColor: 'rgba(244, 67, 54, 0.8)',
+                        backgroundColor: 'rgba(244, 67, 54, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+
+            // Stock Charts
+            function createStockChart(id, color, volatility) {
+                const ctx = document.getElementById(id).getContext('2d');
+                let value = 100 + Math.random() * 50;
+                const data = Array.from({length: 20}, () => {
+                    value = value * (1 + (Math.random() - 0.5) * volatility * 0.02);
+                    return value;
+                });
+                
+                return new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.map((_, i) => ''),
+                        datasets: [{
+                            data: data,
+                            borderColor: color,
+                            backgroundColor: color.replace(')', ', 0.1)').replace('rgb', 'rgba'),
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.1,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                display: false
+                            },
+                            y: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            createStockChart('aaplChart', 'rgba(76, 175, 80, 0.8)', 1.2);
+            createStockChart('tslaChart', 'rgba(244, 67, 54, 0.8)', 2.5);
+            createStockChart('amznChart', 'rgba(33, 150, 243, 0.8)', 1.8);
+            createStockChart('msftChart', 'rgba(76, 175, 80, 0.8)', 1.0);
+            createStockChart('googlChart', 'rgba(255, 193, 7, 0.8)', 1.5);
+            createStockChart('nvdaChart', 'rgba(244, 67, 54, 0.8)', 3.0);
+            createStockChart('metaChart', 'rgba(156, 39, 176, 0.8)', 2.0);
+            createStockChart('jpmChart', 'rgba(33, 150, 243, 0.8)', 0.8);
+
+            // Allocation Chart
+            const allocationCtx = document.getElementById('allocationChart').getContext('2d');
+            new Chart(allocationCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Technology', 'Healthcare', 'Financial', 'Consumer', 'Industrial', 'Other'],
+                    datasets: [{
+                        data: [45, 15, 20, 10, 5, 5],
+                        backgroundColor: [
+                            'rgba(33, 150, 243, 0.7)',
+                            'rgba(76, 175, 80, 0.7)',
+                            'rgba(255, 193, 7, 0.7)',
+                            'rgba(156, 39, 176, 0.7)',
+                            'rgba(244, 67, 54, 0.7)',
+                            'rgba(158, 158, 158, 0.7)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Risk-Return Chart
+            const riskReturnCtx = document.getElementById('riskReturnChart').getContext('2d');
+            new Chart(riskReturnCtx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Your Holdings',
+                            data: [
+                                {x: 4, y: 8},
+                                {x: 7, y: 12},
+                                {x: 3, y: 6},
+                                {x: 6, y: 10},
+                                {x: 8, y: 15}
+                            ],
+                            backgroundColor: 'rgba(33, 150, 243, 0.8)',
+                            pointRadius: 8
+                        },
+                        {
+                            label: 'Market Average',
+                            data: [
+                                {x: 5, y: 7}
+                            ],
+                            backgroundColor: 'rgba(244, 67, 54, 0.8)',
+                            pointRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += `Risk ${context.parsed.x}, Return ${context.parsed.y}%`;
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Risk (1-10)'
+                            },
+                            min: 0,
+                            max: 10
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Return (%)'
+                            },
+                            min: 0,
+                            max: 20
+                        }
+                    }
+                }
+            });
+
+            // Performance Chart
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(performanceCtx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 12}, (_, i) => {
+                        const date = new Date();
+                        date.setMonth(date.getMonth() - (11 - i));
+                        return date.toLocaleString('default', {month: 'short'});
+                    }),
+                    datasets: [
+                        {
+                            label: 'Your Portfolio',
+                            data: Array.from({length: 12}, () => Math.random() * 20 + 30),
+                            borderColor: 'rgba(76, 175, 80, 0.8)',
+                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'S&P 500',
+                            data: Array.from({length: 12}, () => Math.random() * 15 + 25),
+                            borderColor: 'rgba(33, 150, 243, 0.8)',
+                            backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                            tension: 0.3,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Value ($)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Dividend Chart
+            const dividendCtx = document.getElementById('dividendChart').getContext('2d');
+            new Chart(dividendCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['AAPL', 'MSFT', 'JPM', 'AMZN', 'Other'],
+                    datasets: [{
+                        label: 'Estimated Annual Dividend',
+                        data: [120, 85, 65, 25, 30],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.7)',
+                            'rgba(33, 150, 243, 0.7)',
+                            'rgba(255, 193, 7, 0.7)',
+                            'rgba(244, 67, 54, 0.7)',
+                            'rgba(158, 158, 158, 0.7)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Amount ($)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize the app
+        function init() {
+            startRiskMonitoring();
+            initCharts();
+            updateJsonViewer();
+            
+            // Simulate some initial risk events
+            setTimeout(() => logRiskEvent('User accessed trading dashboard', 2), 1000);
+            setTimeout(() => logRiskEvent('User viewed portfolio summary', 1), 2000);
+            setTimeout(() => logRiskEvent('User checked market data', 1), 3000);
+        }
+
+        // Start the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+
+
+                // ======================== BEHAVIOR TRACKER =======================
+// Behavior Tracker with Auto-Download to "JSON folder"
+const BehaviorTracker = {
+  metrics: {
+    sessionStart: null,
+    clicks: 0,
+    keystrokes: 0,
+    mouseDistance: 0,
+    lastMousePosition: null,
+    lastMouseTime: null
+  },
+
+  // Track if button was already clicked
+  saveCompleted: false,
+
+  init() {
+    this.resetMetrics();
+    this.setupEventListeners();
+    this.addCaptureButton();
+  },
+
+  resetMetrics() {
+    this.metrics = {
+      sessionStart: new Date().toISOString(),
+      clicks: 0,
+      keystrokes: 0,
+      mouseDistance: 0,
+      lastMousePosition: null,
+      lastMouseTime: null
+    };
+  },
+
+  setupEventListeners() {
+    document.addEventListener('click', () => this.metrics.clicks++);
+    document.addEventListener('keydown', () => this.metrics.keystrokes++);
+    document.addEventListener('mousemove', (e) => {
+      const now = Date.now();
+      if (this.metrics.lastMousePosition && this.metrics.lastMouseTime) {
+        const xDiff = e.clientX - this.metrics.lastMousePosition.x;
+        const yDiff = e.clientY - this.metrics.lastMousePosition.y;
+        this.metrics.mouseDistance += Math.sqrt(xDiff*xDiff + yDiff*yDiff);
+      }
+      this.metrics.lastMousePosition = { x: e.clientX, y: e.clientY };
+      this.metrics.lastMouseTime = now;
+    });
+  },
+
+  generateReport() {
+    const currentTime = new Date();
+    const sessionMinutes = (currentTime - new Date(this.metrics.sessionStart)) / 60000;
+    
+    return {
+      timestamp: currentTime.toISOString(),
+      sessionDuration: sessionMinutes.toFixed(2) + " minutes",
+      clicksPerMin: (this.metrics.clicks / sessionMinutes).toFixed(2),
+      keystrokesPerMin: (this.metrics.keystrokes / sessionMinutes).toFixed(2),
+      mouseSpeedPxPerSec: (this.metrics.mouseDistance / (sessionMinutes * 60)).toFixed(2),
+      totalClicks: this.metrics.clicks,
+      totalKeystrokes: this.metrics.keystrokes,
+      totalMouseDistance: Math.round(this.metrics.mouseDistance) + "px"
+    };
+  },
+
+  async saveToJSON() {
+    const report = this.generateReport();
+    const datePrefix = new Date().toISOString().slice(0, 10);
+    const timeSuffix = new Date().toISOString().slice(11, 19).replace(/:/g, '-');
+   const fileName = `JSON_behavior_${datePrefix}_${timeSuffix}.json`;
+    
+    try {
+      // Try backend save first
+      const response = await fetch('/save-json', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          filename: fileName,
+          content: JSON.stringify(report, null, 2)
+        })
+      });
+      
+      if (!response.ok) throw new Error('Server error');
+      return true;
+    } catch (error) {
+      console.error("Backend save failed, using download fallback", error);
+      // Fallback to client download
+      const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 100);
+      return true;
+    }
+  },
+
+  addCaptureButton() {
+    const existingBtn = document.getElementById('captureMetricsBtn');
+    if (existingBtn) return;
+
+    const btn = document.createElement('button');
+    btn.id = 'captureMetricsBtn';
+    btn.innerHTML = '💾 Save to JSON Folder';
+    Object.assign(btn.style, {
+      position: 'fixed',
+      bottom: '20px',
+      right: '20px',
+      zIndex: '9999',
+      padding: '10px 15px',
+      background: '#4CAF50',
+      color: 'white',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer',
+      boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+    });
+
+    btn.addEventListener('click', async () => {
+      if (this.saveCompleted) return;
+      
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Saving...';
+      
+      try {
+        const success = await this.saveToJSON();
+        if (success) {
+          btn.innerHTML = '✅ Saved!';
+          btn.style.background = '#9E9E9E'; // Gray out
+          this.saveCompleted = true;
+        }
+      } catch (error) {
+        console.error("Save failed:", error);
+        btn.innerHTML = '❌ Retry';
+        btn.disabled = false;
+      }
+    });
+
+    document.body.appendChild(btn);
+  }
+};
+
+// Initialize when page loads
+window.addEventListener('DOMContentLoaded', () => BehaviorTracker.init());
+    </script>
+</body>
+</html>
